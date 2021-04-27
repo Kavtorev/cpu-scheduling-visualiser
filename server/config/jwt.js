@@ -1,0 +1,12 @@
+const {
+  JWT_ACCESS_SECRET,
+  JWT_REFRESH_SECRET,
+  JWT_ACCESS_EXP,
+  JWT_REFRESH_EXP,
+} = process.env;
+module.exports = {
+  JWT_ACCESS_SECRET,
+  JWT_REFRESH_SECRET,
+  JWT_ACCESS_EXP,
+  JWT_REFRESH_EXP,
+};

@@ -1,0 +1,12 @@
+.authentication {
+  background-color: #97d5e0;
+  padding: 0.5em 2.5em;
+  border-radius: 0.4em;
+}
+
+.authentication__header {
+  color: #1f2937;
+  text-align: center;
+  font-weight: 400;
+  margin: 0.3em;
+}

@@ -1,0 +1,25 @@
+{
+  "name": "cpu-scheduling-visualizer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "server": "nodemon index.js --prefix ./server",
+    "dev": "concurrently \"nodemon index.js --prefix ./server\" \"npm start --prefix ./client\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kavtorev/cpu-scheduling-visualizer-fullstack.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Kavtorev/cpu-scheduling-visualizer-fullstack/issues"
+  },
+  "homepage": "https://github.com/Kavtorev/cpu-scheduling-visualizer-fullstack#readme",
+  "dependencies": {
+    "concurrently": "^6.0.2",
+    "dotenv": "^8.2.0"
+  }
+}

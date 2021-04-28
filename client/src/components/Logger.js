@@ -127,7 +127,10 @@ function Row(props) {
 function CollapsibleTable() {
   const currentFrames = useSelector(getCurrentFrames);
   return (
-    <TableContainer component={Paper}>
+    <TableContainer
+      component={Paper}
+      style={{ borderTop: "1px solid #1D1D1F" }}
+    >
       <Table aria-label="collapsible table" size="small">
         <TableHead>
           <TableRow>

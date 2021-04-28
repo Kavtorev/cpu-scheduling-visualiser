@@ -22,6 +22,8 @@ import {
   openAuthModal,
   toggleSidebar,
 } from "../redux/ui/uiSlice";
+import { getIsAuthenticated } from "../redux/user/userSlice";
+import LogoutButton from "./LogoutButton";
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -66,6 +68,7 @@ export default function Navbar() {
   const dispatch = useDispatch();
   const toggle = useSelector(getIsSidebarToggled);
   const algo = useSelector(getChosenAlgorithmName);
+  const isAuth = useSelector(getIsAuthenticated);
 
   const handleSidebarToggle = (option) => () => dispatch(toggleSidebar(option));
 
@@ -78,10 +81,16 @@ export default function Navbar() {
           {algo !== "_NONE" ? algorithms[algo].label : "Good Morning Dima."}
         </Typography>
         <Hidden xsDown>
-          <LoginButton
-            className={clsx(styles.authButton, styles.loginButton)}
-          />
-          <RegisterButton className={styles.authButton} />
+          {!isAuth ? (
+            <>
+              <LoginButton
+                className={clsx(styles.authButton, styles.loginButton)}
+              />
+              <RegisterButton className={styles.authButton} />
+            </>
+          ) : (
+            <LogoutButton className={styles.authButton} />
+          )}
         </Hidden>
         <Hidden smUp>
           <IconButton
@@ -101,16 +110,30 @@ export default function Navbar() {
             onClose={handleSidebarToggle(false)}
           >
             <List>
-              <ListItem button>
-                <LoginButton className={styles.authButton} />
-              </ListItem>
-              <Divider
-                classes={{ root: styles.sideBarDivider }}
-                variant="middle"
-              />
-              <ListItem button>
-                <RegisterButton className={styles.authButton} />
-              </ListItem>
+              {!isAuth ? (
+                <>
+                  <ListItem button>
+                    <LoginButton className={styles.authButton} />
+                  </ListItem>
+                  <Divider
+                    classes={{ root: styles.sideBarDivider }}
+                    variant="middle"
+                  />
+                  <ListItem button>
+                    <RegisterButton className={styles.authButton} />
+                  </ListItem>
+                </>
+              ) : (
+                <>
+                  <ListItem button>
+                    <LogoutButton className={styles.authButton} />
+                  </ListItem>
+                  <Divider
+                    classes={{ root: styles.sideBarDivider }}
+                    variant="middle"
+                  />
+                </>
+              )}
             </List>
           </Drawer>
         </div>

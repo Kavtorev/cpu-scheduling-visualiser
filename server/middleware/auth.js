@@ -17,7 +17,7 @@ module.exports = async (req, res, next) => {
     return next(new Unauthorized("Session has been expired."));
   }
 
-  const user = await User.findOne({ id: decoded.id });
+  const user = await User.findById(decoded.id);
   if (!user) {
     return next(new Unauthorized());
   }

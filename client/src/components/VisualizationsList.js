@@ -21,20 +21,16 @@ export default memo(function VisualizationsList() {
   const vis = useSelector(getVisualizations);
   const styles = useStyles();
   const isAuth = useSelector(getIsAuthenticated);
+
+  if (!isAuth) {
+    return <FriendlyBanner />;
+  }
+
   return (
     <List disablePadding={true}>
-      <ListSubheader disableGutters={true}>
-        <Box classes={{ root: styles.boxRoot }}>
-          <PaperHeader>Your visualizations</PaperHeader>
-        </Box>
-      </ListSubheader>
-      {isAuth ? (
-        vis.map((e) => {
-          return <VisualizationItem key={e.id} name={e.name} />;
-        })
-      ) : (
-        <FriendlyBanner />
-      )}
+      {vis.map((e) => {
+        return <VisualizationItem key={e.id} name={e.name} />;
+      })}
     </List>
   );
 });

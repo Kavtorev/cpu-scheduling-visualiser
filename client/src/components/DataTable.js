@@ -16,6 +16,7 @@ const useStyles = makeStyles((theme) => ({
   paperRoot: {
     height: "50vh",
     width: "100%",
+    borderTop: "2px solid #1D1D1F",
   },
   dataGridRoot: {
     padding: theme.dataGridPadding.padding,

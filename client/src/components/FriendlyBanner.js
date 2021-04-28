@@ -5,16 +5,17 @@ import React from "react";
 const styles = {
   heigth: "100%",
   display: "flex",
-  flexDirection: "column",
+  flexDirection: "row",
   alignContent: "center",
   justifyContent: "center",
+  paddingTop: "3em",
 };
 
 export default function FriendlyBanner() {
   return (
     <div style={styles}>
       <LockOpenRoundedIcon />
-      <Typography variant="h5">Please Log in</Typography>
+      <Typography>Please Log in</Typography>
     </div>
   );
 }

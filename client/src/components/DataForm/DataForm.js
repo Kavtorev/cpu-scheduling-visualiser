@@ -14,7 +14,6 @@ import {
   chooseAlgo,
   getChosenAlgorithmName,
 } from "../../redux/ui/uiSlice";
-import { resetAction } from "../../redux/player/playerSlice";
 import TextInput from "./TextInput";
 import MenuItem from "@material-ui/core/MenuItem";
 import { algorithms } from "./forms";
@@ -25,6 +24,7 @@ import GenerateButton from "./GenerateButton";
 const useStyles = makeStyles((theme) => ({
   paperRoot: {
     padding: theme.dataGridPadding.padding,
+    borderTop: "3px solid #1D1D1F",
   },
 
   gridRoot: {

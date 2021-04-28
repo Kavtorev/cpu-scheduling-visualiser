@@ -4,7 +4,13 @@ import { useFormik } from "formik";
 import { registerSchema } from "../../validation";
 import { useStyles } from "./RegisterStyles";
 import { useDispatch, useSelector } from "react-redux";
-import { registerAsync, getAuthStatus } from "../../redux/user/userSlice";
+import {
+  registerAsync,
+  getAuthStatus,
+  logOutAsync,
+} from "../../redux/user/userSlice";
+import { closeAuthModal } from "../../redux/ui/uiSlice";
+import { unwrapResult } from "@reduxjs/toolkit";
 
 export default function Register() {
   const styles = useStyles();
@@ -12,7 +18,10 @@ export default function Register() {
   const authStatus = useSelector(getAuthStatus);
 
   const handleRegistration = async (values) => {
-    dispatch(registerAsync(values));
+    dispatch(registerAsync(values))
+      .then(unwrapResult)
+      .then(() => dispatch(closeAuthModal()))
+      .catch((error) => dispatch(logOutAsync(error.message)));
   };
 
   const formik = useFormik({

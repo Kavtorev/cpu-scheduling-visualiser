@@ -1,11 +1,16 @@
-// import { Link } from "react-router-dom";
 import React from "react";
 import { TextField, Button } from "@material-ui/core";
 import { useFormik } from "formik";
 import { loginSchema } from "../../validation";
 import { useStyles } from "./LoginStyles";
-import { logInAsync, getAuthStatus } from "../../redux/user/userSlice";
+import {
+  logInAsync,
+  getAuthStatus,
+  logOutAsync,
+} from "../../redux/user/userSlice";
+import { closeAuthModal } from "../../redux/ui/uiSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { unwrapResult } from "@reduxjs/toolkit";
 import GoogleLogin from "./GoogleLogin";
 
 export default function Login() {
@@ -14,7 +19,10 @@ export default function Login() {
   const authStatus = useSelector(getAuthStatus);
 
   const handleLogin = (values) => {
-    dispatch(logInAsync(values));
+    dispatch(logInAsync(values))
+      .then(unwrapResult)
+      .then(() => dispatch(closeAuthModal()))
+      .catch((error) => dispatch(logOutAsync(error.message)));
   };
 
   const formik = useFormik({

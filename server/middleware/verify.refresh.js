@@ -3,7 +3,6 @@ const User = require("../models/User");
 const { catchAsync } = require("../middleware/errors");
 const { Unauthorized } = require("../errors");
 const { JWT_REFRESH_SECRET } = require("../config/jwt");
-
 module.exports = async (req, res, next) => {
   if (!req.cookies?.refreshToken) {
     return next(new Unauthorized());
@@ -15,10 +14,12 @@ module.exports = async (req, res, next) => {
       ignoreExpiration: false,
     });
   } catch (err) {
+    console.log(err);
     return next(new Unauthorized("Invalid Session"));
   }
+  // find by id... method
+  const user = await User.findById(decoded.id);
 
-  const user = await User.findOne({ id: decoded.id });
   if (!user) {
     return next(new Unauthorized());
   }

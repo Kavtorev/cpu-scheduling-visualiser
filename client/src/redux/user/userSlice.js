@@ -1,6 +1,7 @@
 import axios from "axios";
 import { createSlice, createAsyncThunk, isAnyOf } from "@reduxjs/toolkit";
 import axiosLocalAuth, { refreshSilentlyAsync } from "../../api/local";
+import axiosGoogle from "../../api/google";
 import {
   LOGIN_ROUTE,
   LOGOUT_ROUTE,
@@ -32,8 +33,8 @@ export const googleLoginAsync = createAsyncThunk(
   "user/googLogIn",
   async ({ tokenId, profileObj }, { rejectWithValue }) => {
     try {
-      const data = (
-        await axios.post(
+      const { user } = (
+        await axiosGoogle.post(
           LOGIN_GOOGLE_ROUTE,
           { tokenId },
           {
@@ -45,9 +46,11 @@ export const googleLoginAsync = createAsyncThunk(
         )
       ).data;
       const { name, imageUrl } = profileObj;
-      return { id: data.id, name, imageUrl };
+      user.name = name;
+      user.imageUrl = imageUrl;
+      return user;
     } catch (error) {
-      return rejectWithValue(error);
+      return rejectWithValue(error.message);
     }
   }
 );
@@ -97,7 +100,6 @@ export const updateNameAsync = createAsyncThunk(
       ).data;
       return username;
     } catch (error) {
-      console.log("ERROR", error);
       return rejectWithValue(error.response.data);
     }
   }
@@ -196,6 +198,7 @@ export const getAuthStatus = (state) => state.user.status;
 export const getErrorMessage = (state) => state.user.error;
 export const getIsError = (state) => !!state.user.error;
 export const getIsLocalStrategy = (state) => state.user.strategy === "local";
+export const getStrategy = (state) => state.user.strategy;
 
 // Actions
 

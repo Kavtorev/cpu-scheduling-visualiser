@@ -1,8 +1,8 @@
 import axios from "axios";
-import { attachTokenToInstance, extractTokenMetaFromConfig } from "./common";
+import { extractTokenMetaFromConfig } from "./common";
 import { isJWTExpired } from "../lib/jwt";
 import { API_BASE } from "./constants";
-import { protectInstance, unprotectInstance } from "./interceptors";
+import { protectLocalInstance, unprotectInstance } from "./interceptors";
 
 const axiosLocalAuth = axios.create();
 
@@ -11,11 +11,9 @@ export const refreshSilentlyAsync = async () => {
   return Promise.resolve(user);
 };
 
-axiosLocalAuth.interceptors.response.use(protectInstance(axiosLocalAuth));
+axiosLocalAuth.interceptors.response.use(protectLocalInstance(axiosLocalAuth));
 
 axiosLocalAuth.interceptors.request.use(async function (config) {
-  console.log(config.url.startsWith(API_BASE), config.url);
-
   if (config.url.startsWith(API_BASE)) {
     const { token, exp } = extractTokenMetaFromConfig(config);
 

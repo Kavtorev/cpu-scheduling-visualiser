@@ -4,24 +4,13 @@ const { catchAsync } = require("../middleware/errors");
 const User = require("../models/User");
 const router = Router();
 
-// essentially this route logs or registers a user
 router.post(
   "/google/login",
   googleAuth,
   catchAsync(async (req, res, next) => {
-    const { name, email, picture } = req.user;
-    let user = await User.findOne({ email });
-    if (!user) {
-      user = await User.create({
-        username: name,
-        email,
-        strategy: "google",
-        picture,
-      });
-    }
-
+    const { id } = req.user;
     const { tokenId, exp } = req.tokenMeta;
-    res.status(200).json({ tokenId, exp, id: user.id, strategy: "google" });
+    res.status(200).json({ tokenId, exp, id, strategy: "google" });
   })
 );
 

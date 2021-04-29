@@ -6,6 +6,7 @@ const userSchema = new Schema(
     password: { type: String, required: false },
     strategy: { type: String, required: true },
     picture: { type: String, required: false },
+    visualisations: [{ type: Schema.Types.ObjectId, ref: "Visualisation" }],
   },
   {
     timestamps: true,

@@ -239,6 +239,12 @@ const uiSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    builder.addCase(updateVisualisationAsync.fulfilled, (state, action) => {
+      toast("💾 Data was successfully updated.", {
+        type: toast.TYPE.SUCCESS,
+        autoClose: 1500,
+      });
+    });
     builder.addCase(getVisualisationDataById.fulfilled, (state, action) => {
       state.dataGrid.rows = action.payload.data;
       state.savedVisId = action.payload._id;
@@ -249,6 +255,10 @@ const uiSlice = createSlice({
     builder.addCase(createVisualisationAsync.fulfilled, (state, action) => {
       state.savedVisId = action.payload._id;
       state.visualisationsList.push(action.payload);
+      toast("💾 Data was successfully saved.", {
+        type: toast.TYPE.SUCCESS,
+        autoClose: 1500,
+      });
     });
     builder.addCase(deleteVisualisationAsync.fulfilled, (state, action) => {
       state.visualisationsList = state.visualisationsList.filter(
@@ -260,6 +270,11 @@ const uiSlice = createSlice({
         state.chosenAlgorithm.name = "_NONE";
         state.dataGrid.rows = [];
       }
+
+      toast("❌ Data was successfully deleted.", {
+        type: toast.TYPE.SUCCESS,
+        autoClose: 1500,
+      });
     });
     builder.addCase(chooseNewAlgo, (state) => {
       if (state.savedVisId !== null) {

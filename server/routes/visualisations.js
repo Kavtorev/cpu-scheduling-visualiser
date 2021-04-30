@@ -19,7 +19,6 @@ router.get(
 router.get(
   "/:id",
   catchAsync(async (req, res) => {
-    console.log("PARAMS:", req.params.id);
     const { type, data } = await Visualisation.findById(req.params.id);
     res.status(200).json({ type, data });
   })

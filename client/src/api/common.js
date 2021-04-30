@@ -1,3 +1,5 @@
+import { API_BASE } from "./constants";
+
 export const extractTokenMetaFromConfig = (config) => {
   const token = config.headers.common["authorization"].split(" ")[1];
   const exp = config.auth.exp;
@@ -13,3 +15,5 @@ export const detachTokenFromInstance = (instance) => {
   instance.defaults.headers.common["authorization"] = null;
   instance.defaults.auth = null;
 };
+
+export const getRoute = (strategy, end) => `${API_BASE}/${strategy}${end}`;

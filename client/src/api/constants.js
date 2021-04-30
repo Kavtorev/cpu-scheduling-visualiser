@@ -1,5 +1,4 @@
 const API_BASE = "/api";
-
 const LOGOUT_ROUTE = "/logout";
 const LOGIN_ROUTE = "/login";
 const LOGIN_GOOGLE_ROUTE = "/google/login";

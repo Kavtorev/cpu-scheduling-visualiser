@@ -14,16 +14,26 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function VisualizationItem({ name }) {
+export default function VisualizationItem({
+  id,
+  name,
+  handleTrashClick,
+  handleListButtonClick,
+}) {
   const styles = useStyles();
   return (
-    <ListItem button>
+    <ListItem button onClick={handleListButtonClick} id={id}>
       <ListItemAvatar classes={{ root: styles.listItemAvatarRoot }}>
         <FolderIcon />
       </ListItemAvatar>
       <ListItemText>{name}</ListItemText>
       <ListItemSecondaryAction>
-        <IconButton edge="end" aria-label="delete">
+        <IconButton
+          edge="end"
+          aria-label="delete"
+          onClick={handleTrashClick}
+          id={id}
+        >
           <DeleteIcon />
         </IconButton>
       </ListItemSecondaryAction>

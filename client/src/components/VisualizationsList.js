@@ -1,26 +1,35 @@
-import React, { memo } from "react";
+import React, { memo, useEffect } from "react";
 import List from "@material-ui/core/List";
-import ListSubheader from "@material-ui/core/ListSubheader";
-import { useSelector } from "react-redux";
-import { getVisualizations } from "../redux/ui/uiSlice";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  deleteVisualisationAsync,
+  getVisualisationDataById,
+  getVisualisationsAsync,
+  getVisualizations,
+} from "../redux/ui/uiSlice";
 import VisualizationItem from "./VisualizationItem";
-import Box from "@material-ui/core/Box";
-import { makeStyles } from "@material-ui/core";
-import PaperHeader from "./PaperHeader";
-import { getIsAuthenticated } from "../redux/user/userSlice";
+import { getIsAuthenticated, getStrategy } from "../redux/user/userSlice";
 import FriendlyBanner from "../components/FriendlyBanner";
-
-const useStyles = makeStyles((theme) => ({
-  boxRoot: {
-    backgroundColor: "#215B90",
-    color: "#F5F5F7",
-  },
-}));
 
 export default memo(function VisualizationsList() {
   const vis = useSelector(getVisualizations);
-  const styles = useStyles();
+  const dispatch = useDispatch();
   const isAuth = useSelector(getIsAuthenticated);
+  const strategy = useSelector(getStrategy);
+
+  useEffect(() => {
+    if (isAuth) {
+      dispatch(getVisualisationsAsync(strategy));
+    }
+  }, [isAuth, dispatch, strategy]);
+
+  const handleListButtonClick = (e) => {
+    dispatch(getVisualisationDataById({ _id: e.currentTarget.id, strategy }));
+  };
+
+  const handleTrashClick = (e) => {
+    dispatch(deleteVisualisationAsync({ _id: e.currentTarget.id, strategy }));
+  };
 
   if (!isAuth) {
     return <FriendlyBanner />;
@@ -29,7 +38,15 @@ export default memo(function VisualizationsList() {
   return (
     <List disablePadding={true}>
       {vis.map((e) => {
-        return <VisualizationItem key={e.id} name={e.name} />;
+        return (
+          <VisualizationItem
+            key={e._id}
+            id={e._id}
+            name={e.name}
+            handleListButtonClick={handleListButtonClick}
+            handleTrashClick={handleTrashClick}
+          />
+        );
       })}
     </List>
   );

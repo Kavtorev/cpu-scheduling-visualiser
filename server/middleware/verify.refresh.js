@@ -14,10 +14,8 @@ module.exports = async (req, res, next) => {
       ignoreExpiration: false,
     });
   } catch (err) {
-    console.log(err);
     return next(new Unauthorized("Invalid Session"));
   }
-  // find by id... method
   const user = await User.findById(decoded.id);
 
   if (!user) {

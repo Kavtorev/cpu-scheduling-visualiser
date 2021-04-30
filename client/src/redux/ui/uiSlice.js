@@ -1,13 +1,111 @@
-import { createSlice, createSelector } from "@reduxjs/toolkit";
+import {
+  createSlice,
+  createSelector,
+  createAsyncThunk,
+  isAnyOf,
+  createAction,
+} from "@reduxjs/toolkit";
 import { getRandomInt } from "../../lib/utils";
 import uniqid from "uniqid";
 import { toast } from "react-toastify";
 import UnlimitedToast from "../../components/UnlimitedToast";
+import { instances } from "../../api/instances";
+import { getRoute } from "../../api/common";
+
+export const getVisualisationsAsync = createAsyncThunk(
+  "vis/GET",
+  async (strategy, { rejectWithValue }) => {
+    try {
+      const instance = instances[strategy];
+      if (!instance) {
+        return Promise.reject("Invalid strategy");
+      }
+      const route = getRoute(strategy, "/visualisations/");
+      const data = (await instance.get(route)).data;
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const createVisualisationAsync = createAsyncThunk(
+  "vis/POST",
+  async ({ body, strategy }, { rejectWithValue }) => {
+    try {
+      const instance = instances[strategy];
+      if (!instance) {
+        return Promise.reject("Invalid strategy");
+      }
+      const route = getRoute(strategy, "/visualisations/create");
+      const data = (await instance.post(route, body)).data;
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const deleteVisualisationAsync = createAsyncThunk(
+  "vis/DELETE",
+  async ({ _id, strategy }, { rejectWithValue }) => {
+    try {
+      const instance = instances[strategy];
+      if (!instance) {
+        return Promise.reject("Invalid strategy");
+      }
+      const route = getRoute(strategy, `/visualisations/delete/${_id}`);
+      await instance.delete(route);
+      return _id;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const updateVisualisationAsync = createAsyncThunk(
+  "vis/UPDATE",
+  async ({ body, strategy }, { rejectWithValue }) => {
+    try {
+      const instance = instances[strategy];
+      if (!instance) {
+        return Promise.reject("Invalid strategy");
+      }
+      const route = getRoute(strategy, "/visualisations/update");
+      await instance.put(route, body);
+      return Promise.resolve();
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const getVisualisationDataById = createAsyncThunk(
+  "vis/GETBYID",
+  async ({ _id, strategy }, { rejectWithValue }) => {
+    try {
+      const instance = instances[strategy];
+      if (!instance) {
+        return Promise.reject("Invalid strategy");
+      }
+      const route = getRoute(strategy, `/visualisations/${_id}`);
+      const { type, data } = (await instance.get(route)).data;
+      return { _id, type, data };
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const chooseAlgo = createAction("chooseAlgo");
+export const chooseNewAlgo = createAction("chooseNewAlgo");
 
 const initialState = {
+  visStatus: "idle",
   isSidebarToggled: false,
   isAuthModalOpen: false,
   modalPage: "login",
+  savedVisId: null,
   dataGrid: {
     selectedRows: [],
     numberOfRows: 0,
@@ -36,11 +134,7 @@ const initialState = {
     rows: [],
     unlimitedRows: false,
   },
-  visualizationsList: [
-    { id: 23473, name: "Wizualizacja 2" },
-    { id: 3364, name: "Wizualizacja 3" },
-    { id: 4737, name: "Wizualizacja 4" },
-  ],
+  visualisationsList: [],
   chosenAlgorithm: {
     name: "_NONE",
     timeQuantum: 2,
@@ -94,25 +188,6 @@ const uiSlice = createSlice({
     setTimeQuantum: (state, action) => {
       state.chosenAlgorithm.timeQuantum = action.payload;
     },
-    chooseAlgo: (state, action) => {
-      let { value } = action.payload;
-      if (value.startsWith("_PRIOR")) {
-        if (!state.chosenAlgorithm.name.startsWith("_PRIOR")) {
-          state.dataGrid.columns.push({
-            id: "priority",
-            field: "priority",
-            headerName: "Priority",
-            flex: 0.1,
-          });
-
-          // mb generate random priorities in the future...
-          state.dataGrid.rows = [];
-        }
-      } else {
-        state.dataGrid.columns = initialState.dataGrid.columns;
-      }
-      state.chosenAlgorithm.name = value;
-    },
     toggleSidebar: (state, action) => {
       state.isSidebarToggled = action.payload;
     },
@@ -163,6 +238,91 @@ const uiSlice = createSlice({
       }
     },
   },
+  extraReducers: (builder) => {
+    builder.addCase(getVisualisationDataById.fulfilled, (state, action) => {
+      state.dataGrid.rows = action.payload.data;
+      state.savedVisId = action.payload._id;
+    });
+    builder.addCase(getVisualisationsAsync.fulfilled, (state, action) => {
+      state.visualisationsList = action.payload.data;
+    });
+    builder.addCase(createVisualisationAsync.fulfilled, (state, action) => {
+      state.savedVisId = action.payload._id;
+      state.visualisationsList.push(action.payload);
+    });
+    builder.addCase(deleteVisualisationAsync.fulfilled, (state, action) => {
+      state.visualisationsList = state.visualisationsList.filter(
+        (e) => e._id !== action.payload
+      );
+
+      if (state.savedVisId && state.savedVisId === action.payload) {
+        state.savedVisId = null;
+        state.chosenAlgorithm.name = "_NONE";
+        state.dataGrid.rows = [];
+      }
+    });
+    builder.addCase(chooseNewAlgo, (state) => {
+      if (state.savedVisId !== null) {
+        state.dataGrid.rows = [];
+        state.savedVisId = null;
+      }
+    });
+    builder.addMatcher(
+      isAnyOf(getVisualisationDataById.fulfilled, chooseAlgo, chooseNewAlgo),
+      (state, action) => {
+        let { type } = action.payload;
+        if (type.startsWith("_PRIOR")) {
+          if (!state.chosenAlgorithm.name.startsWith("_PRIOR")) {
+            state.dataGrid.columns.push({
+              id: "priority",
+              field: "priority",
+              headerName: "Priority",
+              flex: 0.1,
+            });
+
+            // mb generate random priorities in the future...
+            if (!state.savedVisId) state.dataGrid.rows = [];
+          }
+        } else {
+          state.dataGrid.columns = initialState.dataGrid.columns;
+        }
+        state.chosenAlgorithm.name = type;
+      }
+    );
+    builder.addMatcher(
+      isAnyOf(
+        getVisualisationsAsync.pending,
+        updateVisualisationAsync.pending,
+        deleteVisualisationAsync.pending,
+        createVisualisationAsync.pending
+      ),
+      (state, action) => {
+        state.visStatus = "loading";
+      }
+    );
+    builder.addMatcher(
+      isAnyOf(
+        getVisualisationsAsync.fulfilled,
+        updateVisualisationAsync.fulfilled,
+        deleteVisualisationAsync.fulfilled,
+        createVisualisationAsync.fulfilled
+      ),
+      (state, action) => {
+        state.visStatus = "success";
+      }
+    );
+    builder.addMatcher(
+      isAnyOf(
+        getVisualisationsAsync.rejected,
+        updateVisualisationAsync.rejected,
+        deleteVisualisationAsync.rejected,
+        createVisualisationAsync.rejected
+      ),
+      (state, action) => {
+        state.visStatus = "error";
+      }
+    );
+  },
 });
 
 export const getRowsSelector = createSelector(
@@ -180,9 +340,11 @@ export const getNumberOfSelectedRows = createSelector(
 );
 
 export const getVisualizations = createSelector(
-  (state) => state.ui.visualizationsList,
+  (state) => state.ui.visualisationsList,
   (vis) => vis
 );
+
+export const getSavedId = (state) => state.ui.savedVisId;
 export const getModalPage = (state) => state.ui.modalPage;
 export const getIsAuthModalOpen = (state) => state.ui.isAuthModalOpen;
 export const getIsSidebarToggled = (state) => state.ui.isSidebarToggled;
@@ -193,6 +355,7 @@ export const getPreemptiveToggle = (state) =>
 export const getIsReadyToStart = (state) =>
   state.ui.chosenAlgorithm.name !== "_NONE" && state.ui.dataGrid.rows.length;
 export const getRows = (state) => state.ui.dataGrid.rows;
+export const getRowsLength = (state) => state.ui.dataGrid.rows.length;
 export default uiSlice.reducer;
 export const {
   generateData,
@@ -203,7 +366,6 @@ export const {
   deleteSelectedRows,
   resetRowSelection,
   addNewRow,
-  chooseAlgo,
   togglePreemptive,
   setTimeQuantum,
   setUnlimitedRows,

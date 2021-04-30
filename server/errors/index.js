@@ -12,7 +12,15 @@ class Unauthorized extends Error {
   }
 }
 
+class UnprocessableEntity extends Error {
+  constructor(message = "Can't process entity") {
+    super(message);
+    this.status = 422;
+  }
+}
+
 module.exports = {
   BadRequest,
   Unauthorized,
+  UnprocessableEntity,
 };

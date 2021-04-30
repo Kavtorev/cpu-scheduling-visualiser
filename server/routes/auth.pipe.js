@@ -9,7 +9,6 @@ router.use("/google", googleAuth);
 router.use("/local", auth);
 
 // protected routes
-
-router.use("/local", require("./profile"));
+router.use(protRouteRegExp, require("./protectedRoutes"));
 
 module.exports = router;

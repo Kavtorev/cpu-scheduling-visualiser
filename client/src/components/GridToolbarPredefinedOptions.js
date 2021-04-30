@@ -6,7 +6,19 @@ import {
 } from "@material-ui/data-grid";
 import PublishOutlinedIcon from "@material-ui/icons/PublishOutlined";
 import Button from "@material-ui/core/Button";
-import { Menu, MenuItem } from "@material-ui/core";
+import { Menu, MenuItem, Typography } from "@material-ui/core";
+import SaveRoundedIcon from "@material-ui/icons/SaveRounded";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getRowsLength,
+  getRows,
+  getChosenAlgorithmName,
+  createVisualisationAsync,
+  updateVisualisationAsync,
+  getSavedId,
+} from "../redux/ui/uiSlice";
+
+import { getStrategy } from "../redux/user/userSlice";
 function GridToolBarImport() {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -47,6 +59,54 @@ function GridToolBarImport() {
   );
 }
 
+function GridToolBarSave() {
+  const dispatch = useDispatch();
+  const rLen = useSelector(getRowsLength);
+  const data = useSelector(getRows);
+  const type = useSelector(getChosenAlgorithmName);
+  const strategy = useSelector(getStrategy);
+  const name = `Visualisation ${rLen + 1}`;
+  const _id = useSelector(getSavedId);
+  const handleClick = () => {
+    if (rLen) {
+      if (!_id) {
+        dispatch(
+          createVisualisationAsync({
+            body: {
+              name,
+              data,
+              type,
+            },
+            strategy,
+          })
+        );
+      } else {
+        dispatch(
+          updateVisualisationAsync({
+            body: {
+              _id,
+              data,
+            },
+            strategy,
+          })
+        );
+      }
+    }
+  };
+  return (
+    <Button
+      aria-controls="save-input"
+      aria-haspopup="true"
+      aria-label="Save input"
+      size="small"
+      onClick={handleClick}
+    >
+      <SaveRoundedIcon />
+      <Typography variant="button">{!_id ? "Save" : "Save Updates"}</Typography>
+    </Button>
+  );
+}
+
 export default memo(function GridToolbarPredefinedOptions() {
   return (
     <>
@@ -54,6 +114,7 @@ export default memo(function GridToolbarPredefinedOptions() {
       <GridToolbarExport />
       <GridToolBarImport />
       <GridFilterToolbarButton />
+      <GridToolBarSave />
     </>
   );
 });

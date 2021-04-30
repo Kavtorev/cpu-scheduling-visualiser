@@ -7,10 +7,29 @@ import {
   getIsLocalStrategy,
   getIsError,
 } from "../../redux/user/userSlice";
-import { Button } from "@material-ui/core";
+import AuthButton from "../AuthButton";
+import GoogleIcon from "../GoogleIcon";
+import { makeStyles } from "@material-ui/styles";
+
+const useStyles = makeStyles((theme) => {
+  console.log(theme.palette.secondary.main);
+  return {
+    googleLogIn: {
+      padding: 0,
+      backgroundColor: theme.palette.lightWhite,
+      "&:hover": {
+        backgroundColor: theme.palette.lightWhite,
+      },
+    },
+    textColor: {
+      color: theme.palette.primary.main,
+    },
+  };
+});
 
 export default function GoogleLogin() {
   const CLIENT_ID = process.env.REACT_APP_GOOGLE_AUTH_CLIENT_ID;
+  const styles = useStyles();
   const dispatch = useDispatch();
   const isError = useSelector(getIsError);
   const isLocal = useSelector(getIsLocalStrategy);
@@ -35,16 +54,18 @@ export default function GoogleLogin() {
   }
 
   function onFailure(res) {
-    console.log("ERROR", res);
+    dispatch(googleLoginAsync.rejected());
   }
 
   return (
-    <Button
+    <AuthButton
+      text="Sign In"
       onClick={googleSingIn}
       disabled={authStatus === "loading"}
-      style={{ color: "white" }}
+      className={styles.googleLogIn}
+      textStyle={styles.textColor}
     >
-      Google LogIn
-    </Button>
+      <GoogleIcon />
+    </AuthButton>
   );
 }

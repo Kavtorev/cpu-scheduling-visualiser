@@ -69,6 +69,7 @@ function GridToolBarSave() {
   const name = `Visualisation ${rLen + 1}`;
   const _id = useSelector(getSavedId);
   const crudStatus = useSelector(getCrudStatus);
+  // const isAuth = useSelector();
   const handleClick = () => {
     if (rLen) {
       if (!_id) {
@@ -105,7 +106,7 @@ function GridToolBarSave() {
       disabled={crudStatus === "loading"}
     >
       <SaveRoundedIcon />
-      <Typography variant="button">{!_id ? "Save" : "Save Updates"}</Typography>
+      {!_id ? "Save" : "Save Updates"}
     </Button>
   );
 }

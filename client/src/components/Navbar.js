@@ -31,28 +31,17 @@ const useStyles = makeStyles((theme) => {
   return {
     root: {
       flexGrow: 1,
-      backgroundColor: "#1D1D1F",
+      backgroundColor: theme.palette.primary.main,
       minHeight: theme.navbarHeight.minHeight,
     },
 
     title: {
       flexGrow: 1,
       marginLeft: "5em",
-      color: "#F5F5F7",
+      color: theme.palette.lightWhite,
       [theme.breakpoints.down("sm")]: {
         marginLeft: "1em",
       },
-    },
-    authButton: {
-      width: "90px",
-      height: "35.22px",
-      textTransform: "none",
-      margin: " 0 1em",
-      color: "#F5F5F7",
-    },
-
-    loginButton: {
-      backgroundColor: "#0066CC",
     },
     paper: {
       backgroundColor: "#1D1D1F",
@@ -95,10 +84,8 @@ export default function Navbar() {
         <Hidden xsDown>
           {!isAuth ? (
             <Hidden>
-              <LoginButton
-                className={clsx(styles.authButton, styles.loginButton)}
-              />
-              <RegisterButton className={styles.authButton} />
+              <LoginButton />
+              <RegisterButton />
               <GoogleLogin />
             </Hidden>
           ) : (
@@ -126,16 +113,14 @@ export default function Navbar() {
               {!isAuth ? (
                 <>
                   <ListItem button>
-                    <LoginButton
-                      className={clsx(styles.authButton, styles.loginButton)}
-                    />
+                    <LoginButton />
                   </ListItem>
                   <Divider
                     classes={{ root: styles.sideBarDivider }}
                     variant="middle"
                   />
                   <ListItem button>
-                    <RegisterButton className={styles.authButton} />
+                    <RegisterButton />
                   </ListItem>
                 </>
               ) : (

@@ -1,14 +1,18 @@
 import React from "react";
-import Button from "@material-ui/core/Button";
-import { useDispatch } from "react-redux";
-import { openAuthModal } from "../redux/ui/uiSlice";
+import AuthButton from "./AuthButton";
+import { makeStyles } from "@material-ui/styles";
 
-export default function LoginButton({ className = "", ...rest }) {
-  const dispatch = useDispatch();
-  const handleClick = () => dispatch(openAuthModal());
-  return (
-    <Button className={className} {...rest} onClick={handleClick}>
-      Sign In
-    </Button>
-  );
+const useStyles = makeStyles((theme) => ({
+  loginRoot: {
+    backgroundColor: theme.palette.secondary.main,
+    "&:hover": {
+      backgroundColor: theme.palette.primary.main,
+      border: `1px solid ${theme.palette.lightWhite}`,
+    },
+  },
+}));
+
+export default function LoginButton() {
+  const styles = useStyles();
+  return <AuthButton text="Sign In" className={styles.loginRoot} />;
 }

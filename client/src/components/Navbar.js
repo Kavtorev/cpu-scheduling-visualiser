@@ -19,11 +19,13 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getChosenAlgorithmName,
   getIsSidebarToggled,
-  openAuthModal,
   toggleSidebar,
 } from "../redux/ui/uiSlice";
 import { getIsAuthenticated } from "../redux/user/userSlice";
 import LogoutButton from "./LogoutButton";
+import { getStrategy } from "../redux/user/userSlice";
+import GoogleLogin from "./Login/GoogleLogin";
+import GoogleLogout from "./Login/GoogleLogout";
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -69,8 +71,18 @@ export default function Navbar() {
   const toggle = useSelector(getIsSidebarToggled);
   const algo = useSelector(getChosenAlgorithmName);
   const isAuth = useSelector(getIsAuthenticated);
+  const strategy = useSelector(getStrategy);
 
   const handleSidebarToggle = (option) => () => dispatch(toggleSidebar(option));
+
+  const strategyButtons = {
+    local: {
+      logout: <LogoutButton className={styles.authButton} />,
+    },
+    google: {
+      logout: <GoogleLogout />,
+    },
+  };
 
   // AppBar is the header tag.
   return (
@@ -82,14 +94,15 @@ export default function Navbar() {
         </Typography>
         <Hidden xsDown>
           {!isAuth ? (
-            <>
+            <Hidden>
               <LoginButton
                 className={clsx(styles.authButton, styles.loginButton)}
               />
               <RegisterButton className={styles.authButton} />
-            </>
+              <GoogleLogin />
+            </Hidden>
           ) : (
-            <LogoutButton className={styles.authButton} />
+            strategyButtons[strategy].logout
           )}
         </Hidden>
         <Hidden smUp>
@@ -113,7 +126,9 @@ export default function Navbar() {
               {!isAuth ? (
                 <>
                   <ListItem button>
-                    <LoginButton className={styles.authButton} />
+                    <LoginButton
+                      className={clsx(styles.authButton, styles.loginButton)}
+                    />
                   </ListItem>
                   <Divider
                     classes={{ root: styles.sideBarDivider }}
@@ -125,9 +140,7 @@ export default function Navbar() {
                 </>
               ) : (
                 <>
-                  <ListItem button>
-                    <LogoutButton className={styles.authButton} />
-                  </ListItem>
+                  <ListItem button>{strategyButtons[strategy].logout}</ListItem>
                   <Divider
                     classes={{ root: styles.sideBarDivider }}
                     variant="middle"

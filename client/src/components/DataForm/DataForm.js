@@ -11,7 +11,7 @@ import { Formik, Form } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addNewRow,
-  chooseAlgo,
+  chooseNewAlgo,
   getChosenAlgorithmName,
 } from "../../redux/ui/uiSlice";
 import TextInput from "./TextInput";
@@ -24,7 +24,7 @@ import GenerateButton from "./GenerateButton";
 const useStyles = makeStyles((theme) => ({
   paperRoot: {
     padding: theme.dataGridPadding.padding,
-    borderTop: "3px solid #1D1D1F",
+    borderTop: "3px solid #11606B",
   },
 
   gridRoot: {
@@ -46,8 +46,8 @@ export default function DataForm() {
 
   const handleAlgoChange = ({ target }) => {
     dispatch(
-      chooseAlgo({
-        value: target.value,
+      chooseNewAlgo({
+        type: target.value,
       })
     );
   };

@@ -29,7 +29,11 @@ export default function GoogleLogin() {
   }
 
   return (
-    <Button onClick={googleSignOut} disabled={authStatus === "loading"}>
+    <Button
+      onClick={googleSignOut}
+      disabled={authStatus === "loading"}
+      style={{ color: "white" }}
+    >
       Google Log Out
     </Button>
   );

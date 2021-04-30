@@ -8,7 +8,7 @@ const useStyles = makeStyles((theme) => ({
   paperRoot: {
     height: "40vh",
     overflow: "auto",
-    borderTop: "3px solid #1D1D1F",
+    borderTop: "3px solid #C82E37",
     padding: theme.dataGridPadding.padding,
   },
 }));

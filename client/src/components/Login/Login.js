@@ -11,7 +11,6 @@ import {
 import { closeAuthModal } from "../../redux/ui/uiSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { unwrapResult } from "@reduxjs/toolkit";
-import GoogleLogin from "./GoogleLogin";
 
 export default function Login() {
   const styles = useStyles();

@@ -28,12 +28,10 @@ function initApp() {
   app.use(require("./routes/login"));
   app.use(require("./routes/register"));
   app.use(require("./routes/token"));
-
   app.use(require("./routes/login.google"));
 
   // a set of protected routes
   app.use("/api", require("./routes/auth.pipe"));
-
   app.use(notFoundResponse);
   app.use(internalServerError);
 

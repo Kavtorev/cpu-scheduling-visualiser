@@ -1,8 +1,12 @@
 import React from "react";
 import { useGoogleLogin } from "react-google-login";
 import { useDispatch, useSelector } from "react-redux";
-import { getAuthStatus, googleLoginAsync } from "../../redux/user/userSlice";
-import { getIsError, getIsLocalStrategy } from "../../redux/user/userSlice";
+import {
+  getAuthStatus,
+  googleLoginAsync,
+  getIsLocalStrategy,
+  getIsError,
+} from "../../redux/user/userSlice";
 import { Button } from "@material-ui/core";
 
 export default function GoogleLogin() {
@@ -35,7 +39,11 @@ export default function GoogleLogin() {
   }
 
   return (
-    <Button onClick={googleSingIn} disabled={authStatus === "loading"}>
+    <Button
+      onClick={googleSingIn}
+      disabled={authStatus === "loading"}
+      style={{ color: "white" }}
+    >
       Google LogIn
     </Button>
   );

@@ -60,10 +60,10 @@ export default memo(function CustomToolbar() {
 
   return (
     <Grid container alignItems="center">
-      <Grid item sm={12} lg={6}>
+      <Grid item sm={12} lg={4}>
         <PaperHeader>Dane wejściowe</PaperHeader>
       </Grid>
-      <Grid item xs={12} lg={6}>
+      <Grid item xs={12} lg={8}>
         <GridToolbarContainer className={styles.toolbarContainer}>
           <GridToolbarPredefinedOptions />
           <GridToolBarDelete />

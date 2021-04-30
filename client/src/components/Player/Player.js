@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Player() {
   const styles = useStyles();
   return (
-    <Paper style={{ borderTop: "1px solid #1D1D1F" }}>
+    <Paper style={{ borderTop: "1px solid #E87C59" }}>
       <Grid container classes={{ root: styles.gridRoot }}>
         <Grid item xs={12}>
           <PlayerControlPanel />

@@ -1,4 +1,3 @@
-import axios from "axios";
 import { createSlice, createAsyncThunk, isAnyOf } from "@reduxjs/toolkit";
 import axiosLocalAuth, { refreshSilentlyAsync } from "../../api/local";
 import axiosGoogle from "../../api/google";

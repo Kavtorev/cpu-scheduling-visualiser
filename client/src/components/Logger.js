@@ -52,8 +52,6 @@ function Row(props) {
   const algo = useSelector(getChosenAlgorithmName);
   const chip = chipMeta.find((e) => e.label === row.state);
 
-  // console.log("ROW:", row.process);
-
   return (
     <React.Fragment>
       <TableRow className={classes.root}>
@@ -129,7 +127,7 @@ function CollapsibleTable() {
   return (
     <TableContainer
       component={Paper}
-      style={{ borderTop: "1px solid #1D1D1F" }}
+      style={{ borderTop: "1px solid #373B76" }}
     >
       <Table aria-label="collapsible table" size="small">
         <TableHead>

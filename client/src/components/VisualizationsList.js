@@ -3,6 +3,7 @@ import List from "@material-ui/core/List";
 import { useDispatch, useSelector } from "react-redux";
 import {
   deleteVisualisationAsync,
+  getCrudStatus,
   getVisualisationDataById,
   getVisualisationsAsync,
   getVisualizations,
@@ -10,12 +11,14 @@ import {
 import VisualizationItem from "./VisualizationItem";
 import { getIsAuthenticated, getStrategy } from "../redux/user/userSlice";
 import FriendlyBanner from "../components/FriendlyBanner";
+import Loader from "./Loader";
 
 export default memo(function VisualizationsList() {
   const vis = useSelector(getVisualizations);
   const dispatch = useDispatch();
   const isAuth = useSelector(getIsAuthenticated);
   const strategy = useSelector(getStrategy);
+  const crudStatus = useSelector(getCrudStatus);
 
   useEffect(() => {
     if (isAuth) {
@@ -31,10 +34,14 @@ export default memo(function VisualizationsList() {
     dispatch(deleteVisualisationAsync({ _id: e.currentTarget.id, strategy }));
   };
 
-  if (!isAuth) {
-    return <FriendlyBanner />;
-  }
+  if (!isAuth) return <FriendlyBanner />;
 
+  if (crudStatus === "loading")
+    return (
+      <FriendlyBanner>
+        <Loader />
+      </FriendlyBanner>
+    );
   return (
     <List disablePadding={true}>
       {vis.map((e) => {

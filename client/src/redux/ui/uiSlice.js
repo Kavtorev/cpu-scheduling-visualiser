@@ -101,7 +101,7 @@ export const chooseAlgo = createAction("chooseAlgo");
 export const chooseNewAlgo = createAction("chooseNewAlgo");
 
 const initialState = {
-  visStatus: "idle",
+  crudStatus: "idle",
   isSidebarToggled: false,
   isAuthModalOpen: false,
   modalPage: "login",
@@ -294,10 +294,11 @@ const uiSlice = createSlice({
         getVisualisationsAsync.pending,
         updateVisualisationAsync.pending,
         deleteVisualisationAsync.pending,
-        createVisualisationAsync.pending
+        createVisualisationAsync.pending,
+        getVisualisationDataById.pending
       ),
       (state, action) => {
-        state.visStatus = "loading";
+        state.crudStatus = "loading";
       }
     );
     builder.addMatcher(
@@ -305,10 +306,11 @@ const uiSlice = createSlice({
         getVisualisationsAsync.fulfilled,
         updateVisualisationAsync.fulfilled,
         deleteVisualisationAsync.fulfilled,
-        createVisualisationAsync.fulfilled
+        createVisualisationAsync.fulfilled,
+        getVisualisationDataById.fulfilled
       ),
       (state, action) => {
-        state.visStatus = "success";
+        state.crudStatus = "success";
       }
     );
     builder.addMatcher(
@@ -316,10 +318,11 @@ const uiSlice = createSlice({
         getVisualisationsAsync.rejected,
         updateVisualisationAsync.rejected,
         deleteVisualisationAsync.rejected,
-        createVisualisationAsync.rejected
+        createVisualisationAsync.rejected,
+        getVisualisationDataById.rejected
       ),
       (state, action) => {
-        state.visStatus = "error";
+        state.crudStatus = "error";
       }
     );
   },
@@ -344,6 +347,7 @@ export const getVisualizations = createSelector(
   (vis) => vis
 );
 
+export const getCrudStatus = (state) => state.ui.crudStatus;
 export const getSavedId = (state) => state.ui.savedVisId;
 export const getModalPage = (state) => state.ui.modalPage;
 export const getIsAuthModalOpen = (state) => state.ui.isAuthModalOpen;

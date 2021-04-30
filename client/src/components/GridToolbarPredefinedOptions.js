@@ -16,6 +16,7 @@ import {
   createVisualisationAsync,
   updateVisualisationAsync,
   getSavedId,
+  getCrudStatus,
 } from "../redux/ui/uiSlice";
 
 import { getStrategy } from "../redux/user/userSlice";
@@ -67,6 +68,7 @@ function GridToolBarSave() {
   const strategy = useSelector(getStrategy);
   const name = `Visualisation ${rLen + 1}`;
   const _id = useSelector(getSavedId);
+  const crudStatus = useSelector(getCrudStatus);
   const handleClick = () => {
     if (rLen) {
       if (!_id) {
@@ -100,6 +102,7 @@ function GridToolBarSave() {
       aria-label="Save input"
       size="small"
       onClick={handleClick}
+      disabled={crudStatus === "loading"}
     >
       <SaveRoundedIcon />
       <Typography variant="button">{!_id ? "Save" : "Save Updates"}</Typography>

@@ -11,11 +11,14 @@ const styles = {
   paddingTop: "3em",
 };
 
-export default function FriendlyBanner() {
-  return (
-    <div style={styles}>
-      <LockOpenRoundedIcon />
-      <Typography>Please Log in</Typography>
-    </div>
-  );
+export default function FriendlyBanner({ children }) {
+  console.log("CHILDREN:", children);
+  if (!children)
+    children = (
+      <>
+        <LockOpenRoundedIcon />
+        <Typography>Please Log in</Typography>
+      </>
+    );
+  return <div style={styles}>{children}</div>;
 }

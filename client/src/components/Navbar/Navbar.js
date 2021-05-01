@@ -1,7 +1,6 @@
 import React from "react";
 import LoginButton from "./LoginButton";
 import RegisterButton from "./RegisterButton";
-import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -14,18 +13,21 @@ import Drawer from "@material-ui/core/Drawer";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import Logo from "./Logo";
-import { algorithms } from "./DataForm/forms";
+import { algorithms } from "../DataForm/forms";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getChosenAlgorithmName,
   getIsSidebarToggled,
   toggleSidebar,
-} from "../redux/ui/uiSlice";
-import { getIsAuthenticated } from "../redux/user/userSlice";
+} from "../../redux/ui/uiSlice";
+import { getIsAuthenticated, getsUsername } from "../../redux/user/userSlice";
 import LogoutButton from "./LogoutButton";
-import { getStrategy } from "../redux/user/userSlice";
-import GoogleLogin from "./Login/GoogleLogin";
-import GoogleLogout from "./Login/GoogleLogout";
+import { getStrategy } from "../../redux/user/userSlice";
+import GoogleLogin from "./GoogleLogin";
+import GoogleLogout from "./GoogleLogout";
+import { getGreeting } from "../../lib/utils";
+import Loader from "../Loader";
+import { getIsStartedStoppedFinished } from "../../redux/player/playerSlice";
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -61,12 +63,14 @@ export default function Navbar() {
   const algo = useSelector(getChosenAlgorithmName);
   const isAuth = useSelector(getIsAuthenticated);
   const strategy = useSelector(getStrategy);
+  const username = useSelector(getsUsername);
+  const { isStarted, isFinished } = useSelector(getIsStartedStoppedFinished);
 
   const handleSidebarToggle = (option) => () => dispatch(toggleSidebar(option));
 
   const strategyButtons = {
     local: {
-      logout: <LogoutButton className={styles.authButton} />,
+      logout: <LogoutButton />,
     },
     google: {
       logout: <GoogleLogout />,
@@ -79,7 +83,14 @@ export default function Navbar() {
       <Toolbar classes={{ root: styles.root }}>
         <Logo />
         <Typography variant="h6" className={styles.title}>
-          {algo !== "_NONE" ? algorithms[algo].label : "Good Morning Dima."}
+          {algo !== "_NONE" ? (
+            <>
+              {algorithms[algo].label}{" "}
+              {isStarted && !isFinished ? <Loader size={20} /> : null}
+            </>
+          ) : (
+            `${getGreeting()}${username}`
+          )}
         </Typography>
         <Hidden xsDown>
           {!isAuth ? (

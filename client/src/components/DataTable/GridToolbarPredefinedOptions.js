@@ -6,7 +6,7 @@ import {
 } from "@material-ui/data-grid";
 import PublishOutlinedIcon from "@material-ui/icons/PublishOutlined";
 import Button from "@material-ui/core/Button";
-import { Menu, MenuItem, Typography } from "@material-ui/core";
+import { Menu, MenuItem } from "@material-ui/core";
 import SaveRoundedIcon from "@material-ui/icons/SaveRounded";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -17,9 +17,9 @@ import {
   updateVisualisationAsync,
   getSavedId,
   getCrudStatus,
-} from "../redux/ui/uiSlice";
+} from "../../redux/ui/uiSlice";
+import { getIsAuthenticated, getStrategy } from "../../redux/user/userSlice";
 
-import { getIsAuthenticated, getStrategy } from "../redux/user/userSlice";
 function GridToolBarImport() {
   const [anchorEl, setAnchorEl] = React.useState(null);
 

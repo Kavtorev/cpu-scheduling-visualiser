@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
-import Fade from "@material-ui/core/Fade";
 import { useDispatch, useSelector } from "react-redux";
 import {
   closeAuthModal,
@@ -55,13 +54,13 @@ export default function AuthModal() {
 
   const modalBody = isLogin ? (
     <>
-      <Typography variant="h5">Sign in</Typography>
+      <Typography variant="h5">Sign In</Typography>
       <Login />
       <SwitchOption text={"Sign up"} onClick={handlePageChange} />
     </>
   ) : (
     <>
-      <Typography variant="h5">Sign up</Typography>
+      <Typography variant="h5">Sign Up</Typography>
       <Register />
       <SwitchOption text={"Sign in"} onClick={handlePageChange} />
     </>

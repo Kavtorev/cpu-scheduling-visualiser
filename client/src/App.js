@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import "./App.css";
-import Navbar from "./components/Navbar";
+import Navbar from "./components/Navbar/Navbar";
 import { ThemeProvider } from "@material-ui/core/styles";
 import theme from "./globalTheme";
 import BaseLayout from "./containers/BaseLayout";

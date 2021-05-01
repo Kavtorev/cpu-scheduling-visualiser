@@ -37,7 +37,7 @@ export default function GoogleLogin() {
 
   return (
     <AuthButton
-      text="Google Log Out"
+      text="Google Sign out"
       onClick={googleSignOut}
       disabled={authStatus === "loading"}
       className={styles.googleLogout}

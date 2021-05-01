@@ -193,6 +193,7 @@ const userSlice = createSlice({
 // Exports start here
 // Selectors
 export const getIsAuthenticated = (state) => state.user.isAuthenticated;
+export const getsUsername = (state) => state.user.name;
 export const getAuthStatus = (state) => state.user.status;
 export const getErrorMessage = (state) => state.user.error;
 export const getIsError = (state) => !!state.user.error;

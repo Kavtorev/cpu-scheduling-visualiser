@@ -12,6 +12,7 @@ import VisualizationItem from "./VisualizationItem";
 import { getIsAuthenticated, getStrategy } from "../redux/user/userSlice";
 import FriendlyBanner from "../components/FriendlyBanner";
 import Loader from "./Loader";
+import { Typography } from "@material-ui/core";
 
 export default memo(function VisualizationsList() {
   const vis = useSelector(getVisualizations);
@@ -42,6 +43,13 @@ export default memo(function VisualizationsList() {
         <Loader />
       </FriendlyBanner>
     );
+
+  if (!vis.length)
+    return (
+      <FriendlyBanner>
+        <Typography>Empty.</Typography>
+      </FriendlyBanner>
+    );
   return (
     <List disablePadding={true}>
       {vis.map((e) => {
@@ -50,6 +58,7 @@ export default memo(function VisualizationsList() {
             key={e._id}
             id={e._id}
             name={e.name}
+            type={e.type}
             handleListButtonClick={handleListButtonClick}
             handleTrashClick={handleTrashClick}
           />

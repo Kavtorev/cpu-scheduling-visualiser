@@ -1,5 +1,5 @@
 import React from "react";
-import AuthButton from "./AuthButton";
+import AuthButton from "../AuthButton";
 import { makeStyles } from "@material-ui/styles";
 
 const useStyles = makeStyles((theme) => ({

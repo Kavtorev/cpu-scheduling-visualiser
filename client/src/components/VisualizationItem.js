@@ -3,10 +3,11 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import FolderIcon from "@material-ui/icons/Folder";
 import { makeStyles } from "@material-ui/core/styles";
-import { ListItemText } from "@material-ui/core";
+import { Chip, ListItemText } from "@material-ui/core";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import DeleteIcon from "@material-ui/icons/Delete";
 import IconButton from "@material-ui/core/IconButton";
+import Box from "@material-ui/core/Box";
 
 const useStyles = makeStyles((theme) => ({
   listItemAvatarRoot: {
@@ -17,6 +18,7 @@ const useStyles = makeStyles((theme) => ({
 export default function VisualizationItem({
   id,
   name,
+  type,
   handleTrashClick,
   handleListButtonClick,
 }) {
@@ -26,7 +28,9 @@ export default function VisualizationItem({
       <ListItemAvatar classes={{ root: styles.listItemAvatarRoot }}>
         <FolderIcon />
       </ListItemAvatar>
-      <ListItemText>{name}</ListItemText>
+      <ListItemText>
+        <span>{`${name} ${type.replace("_", "")}`}</span>
+      </ListItemText>
       <ListItemSecondaryAction>
         <IconButton
           edge="end"

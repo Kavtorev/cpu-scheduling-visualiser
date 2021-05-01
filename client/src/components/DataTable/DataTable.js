@@ -2,13 +2,12 @@ import React from "react";
 import { DataGrid } from "@material-ui/data-grid";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
-
 import { useDispatch, useSelector } from "react-redux";
 import {
   getRowsSelector,
   getColumnsSelector,
   selectRows,
-} from "../redux/ui/uiSlice";
+} from "../../redux/ui/uiSlice";
 
 import CustomToolbar from "./CustomToolbar";
 

@@ -1,5 +1,4 @@
 import { Typography } from "@material-ui/core";
-import LockOpenRoundedIcon from "@material-ui/icons/LockOpenRounded";
 import React from "react";
 
 const styles = {
@@ -12,12 +11,10 @@ const styles = {
 };
 
 export default function FriendlyBanner({ children }) {
-  console.log("CHILDREN:", children);
   if (!children)
     children = (
       <>
-        <LockOpenRoundedIcon />
-        <Typography>Please Log in</Typography>
+        <Typography>Please, Sign In.</Typography>
       </>
     );
   return <div style={styles}>{children}</div>;

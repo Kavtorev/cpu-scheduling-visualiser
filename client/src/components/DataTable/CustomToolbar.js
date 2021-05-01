@@ -10,8 +10,8 @@ import {
   getNumberOfSelectedRows,
   deleteSelectedRows,
   resetRowSelection,
-} from "../redux/ui/uiSlice";
-import PaperHeader from "./PaperHeader";
+} from "../../redux/ui/uiSlice";
+import PaperHeader from "../PaperHeader";
 import GridToolbarPredefinedOptions from "./GridToolbarPredefinedOptions";
 
 const useStyles = makeStyles((theme) => ({

@@ -145,6 +145,9 @@ const uiSlice = createSlice({
   name: "ui",
   initialState: initialState,
   reducers: {
+    resetUI: (state) => {
+      for (let key in state) state[key] = initialState[key];
+    },
     setModalPage: (state, action) => {
       state.modalPage = action.payload;
     },
@@ -391,4 +394,5 @@ export const {
   openAuthModal,
   closeAuthModal,
   setModalPage,
+  resetUI,
 } = uiSlice.actions;

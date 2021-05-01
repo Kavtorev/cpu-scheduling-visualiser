@@ -19,7 +19,7 @@ import {
   getCrudStatus,
 } from "../redux/ui/uiSlice";
 
-import { getStrategy } from "../redux/user/userSlice";
+import { getIsAuthenticated, getStrategy } from "../redux/user/userSlice";
 function GridToolBarImport() {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -69,7 +69,6 @@ function GridToolBarSave() {
   const name = `Visualisation ${rLen + 1}`;
   const _id = useSelector(getSavedId);
   const crudStatus = useSelector(getCrudStatus);
-  // const isAuth = useSelector();
   const handleClick = () => {
     if (rLen) {
       if (!_id) {
@@ -112,13 +111,14 @@ function GridToolBarSave() {
 }
 
 export default memo(function GridToolbarPredefinedOptions() {
+  const isAuth = useSelector(getIsAuthenticated);
   return (
     <>
       <GridDensitySelector />
       <GridToolbarExport />
       <GridToolBarImport />
       <GridFilterToolbarButton />
-      <GridToolBarSave />
+      {isAuth ? <GridToolBarSave /> : null}
     </>
   );
 });

@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "rgba(0, 102, 204, 0.08)",
     },
     "& .MuiCheckbox-colorPrimary.Mui-checked": {
-      color: "#0066CC",
+      color: theme.palette.secondary.main,
     },
   },
   dataGridRootVariable: {

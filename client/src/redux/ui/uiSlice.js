@@ -12,88 +12,68 @@ import UnlimitedToast from "../../components/UnlimitedToast";
 import { instances } from "../../api/instances";
 import { getRoute } from "../../api/common";
 
+const getInstanceAndRoute = (strategy, path) => ({
+  instance: instances[strategy],
+  route: getRoute(strategy, path),
+});
+
 export const getVisualisationsAsync = createAsyncThunk(
   "vis/GET",
-  async (strategy, { rejectWithValue }) => {
-    try {
-      const instance = instances[strategy];
-      if (!instance) {
-        return Promise.reject("Invalid strategy");
-      }
-      const route = getRoute(strategy, "/visualisations/");
-      const data = (await instance.get(route)).data;
-      return data;
-    } catch (error) {
-      return rejectWithValue(error.response.data);
-    }
+  async (strategy) => {
+    const { instance, route } = getInstanceAndRoute(
+      strategy,
+      "/visualisations/"
+    );
+    const data = (await instance.get(route)).data;
+    return data;
   }
 );
 
 export const createVisualisationAsync = createAsyncThunk(
   "vis/POST",
-  async ({ body, strategy }, { rejectWithValue }) => {
-    try {
-      const instance = instances[strategy];
-      if (!instance) {
-        return Promise.reject("Invalid strategy");
-      }
-      const route = getRoute(strategy, "/visualisations/create");
-      const data = (await instance.post(route, body)).data;
-      return data;
-    } catch (error) {
-      return rejectWithValue(error.response.data);
-    }
+  async ({ body, strategy }) => {
+    const { instance, route } = getInstanceAndRoute(
+      strategy,
+      "/visualisations/create"
+    );
+    const data = (await instance.post(route, body)).data;
+    return data;
   }
 );
 
 export const deleteVisualisationAsync = createAsyncThunk(
   "vis/DELETE",
-  async ({ _id, strategy }, { rejectWithValue }) => {
-    try {
-      const instance = instances[strategy];
-      if (!instance) {
-        return Promise.reject("Invalid strategy");
-      }
-      const route = getRoute(strategy, `/visualisations/delete/${_id}`);
-      await instance.delete(route);
-      return _id;
-    } catch (error) {
-      return rejectWithValue(error.response.data);
-    }
+  async ({ _id, strategy }) => {
+    const { instance, route } = getInstanceAndRoute(
+      strategy,
+      `/visualisations/delete/${_id}`
+    );
+    await instance.delete(route);
+    return _id;
   }
 );
 
 export const updateVisualisationAsync = createAsyncThunk(
   "vis/UPDATE",
-  async ({ body, strategy }, { rejectWithValue }) => {
-    try {
-      const instance = instances[strategy];
-      if (!instance) {
-        return Promise.reject("Invalid strategy");
-      }
-      const route = getRoute(strategy, "/visualisations/update");
-      await instance.put(route, body);
-      return Promise.resolve();
-    } catch (error) {
-      return rejectWithValue(error.response.data);
-    }
+  async ({ body, strategy }) => {
+    const { instance, route } = getInstanceAndRoute(
+      strategy,
+      "/visualisations/update"
+    );
+    await instance.put(route, body);
+    return Promise.resolve();
   }
 );
 
 export const getVisualisationDataById = createAsyncThunk(
   "vis/GETBYID",
-  async ({ _id, strategy }, { rejectWithValue }) => {
-    try {
-      const instance = instances[strategy];
-      if (!instance) {
-        return Promise.reject("Invalid strategy");
-      }
-      const route = getRoute(strategy, `/visualisations/${_id}`);
-      const { type, data } = (await instance.get(route)).data;
-      return { _id, type, data };
-    } catch (error) {
-      return rejectWithValue(error.response.data);
-    }
+  async ({ _id, strategy }) => {
+    const { instance, route } = getInstanceAndRoute(
+      strategy,
+      `/visualisations/${_id}`
+    );
+    const { type, data } = (await instance.get(route)).data;
+    return { _id, type, data };
   }
 );
 
@@ -341,6 +321,7 @@ const uiSlice = createSlice({
       ),
       (state, action) => {
         state.crudStatus = "error";
+        console.log("rejected");
       }
     );
   },

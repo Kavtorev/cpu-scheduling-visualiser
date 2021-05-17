@@ -30,19 +30,19 @@ let defaultFields = [arrivalTime, cpuTime];
 export let algorithms = {
   _FIFO: {
     label: "First come first served",
-    fields: [...defaultFields],
+    fields: defaultFields,
   },
   _SJF: {
     label: "Shortest Job First",
-    fields: [...defaultFields],
+    fields: defaultFields,
   },
   _SRTF: {
     label: "Shortest Remaining Time",
-    fields: [...defaultFields],
+    fields: defaultFields,
   },
   _RR: {
     label: "Round-Robin",
-    fields: [...defaultFields],
+    fields: defaultFields,
   },
   _PRIOR_NONPRE: {
     label: "Priority (non-preemptive)",

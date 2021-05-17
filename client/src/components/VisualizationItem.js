@@ -16,7 +16,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function VisualizationItem({
-  id,
   name,
   type,
   handleTrashClick,
@@ -24,7 +23,7 @@ export default function VisualizationItem({
 }) {
   const styles = useStyles();
   return (
-    <ListItem button onClick={handleListButtonClick} id={id}>
+    <ListItem button onClick={handleListButtonClick}>
       <ListItemAvatar classes={{ root: styles.listItemAvatarRoot }}>
         <FolderIcon />
       </ListItemAvatar>
@@ -32,12 +31,7 @@ export default function VisualizationItem({
         <span>{`${name} ${type.replace("_", "")}`}</span>
       </ListItemText>
       <ListItemSecondaryAction>
-        <IconButton
-          edge="end"
-          aria-label="delete"
-          onClick={handleTrashClick}
-          id={id}
-        >
+        <IconButton edge="end" aria-label="delete" onClick={handleTrashClick}>
           <DeleteIcon />
         </IconButton>
       </ListItemSecondaryAction>

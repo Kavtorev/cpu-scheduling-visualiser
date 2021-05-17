@@ -27,14 +27,6 @@ export default memo(function VisualizationsList() {
     }
   }, [isAuth, dispatch, strategy]);
 
-  const handleListButtonClick = (e) => {
-    dispatch(getVisualisationDataById({ _id: e.currentTarget.id, strategy }));
-  };
-
-  const handleTrashClick = (e) => {
-    dispatch(deleteVisualisationAsync({ _id: e.currentTarget.id, strategy }));
-  };
-
   if (!isAuth) return <FriendlyBanner />;
 
   if (crudStatus === "loading")
@@ -56,11 +48,14 @@ export default memo(function VisualizationsList() {
         return (
           <VisualizationItem
             key={e._id}
-            id={e._id}
             name={e.name}
             type={e.type}
-            handleListButtonClick={handleListButtonClick}
-            handleTrashClick={handleTrashClick}
+            handleListButtonClick={() =>
+              dispatch(getVisualisationDataById({ _id: e._id, strategy }))
+            }
+            handleTrashClick={() =>
+              dispatch(deleteVisualisationAsync({ _id: e._id, strategy }))
+            }
           />
         );
       })}

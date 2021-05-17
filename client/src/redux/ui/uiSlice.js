@@ -55,10 +55,10 @@ export const deleteVisualisationAsync = createAsyncThunk(
 
 export const updateVisualisationAsync = createAsyncThunk(
   "vis/UPDATE",
-  async ({ body, strategy }) => {
+  async ({ _id, body, strategy }) => {
     const { instance, route } = getInstanceAndRoute(
       strategy,
-      "/visualisations/update"
+      `/visualisations/update/${_id}`
     );
     await instance.put(route, body);
     return Promise.resolve();

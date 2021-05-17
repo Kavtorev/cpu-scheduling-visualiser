@@ -2,6 +2,7 @@ const { Router } = require("express");
 const User = require("../models/User");
 const Visualisation = require("../models/Visualisation");
 const { catchAsync } = require("../middleware/errors");
+const owner = require("../middleware/owner");
 const { UnprocessableEntity } = require("../errors");
 const router = Router();
 
@@ -16,13 +17,10 @@ router.get(
   })
 );
 
-router.get(
-  "/:id",
-  catchAsync(async (req, res) => {
-    const { type, data } = await Visualisation.findById(req.params.id);
-    res.status(200).json({ type, data });
-  })
-);
+router.get("/:id", owner, (req, res) => {
+  const { type, data } = req.record;
+  res.status(200).json({ type, data });
+});
 
 router.post(
   "/create",
@@ -41,6 +39,7 @@ router.post(
 // DELETE doesn't take a body
 router.delete(
   "/delete/:id",
+  owner,
   catchAsync(async (req, res) => {
     await Visualisation.deleteOne({ _id: req.params.id });
     res.status(204).send("resource deleted successfully");
@@ -48,14 +47,11 @@ router.delete(
 );
 
 router.put(
-  "/update",
+  "/update/:id",
+  owner,
   catchAsync(async (req, res) => {
-    const { _id, data } = req.body;
-    const doc = await Visualisation.findById(_id);
-    if (!doc) {
-      throw new UnprocessableEntity();
-    }
-    doc.data = data;
+    const doc = req.record;
+    doc.data = req.body.data;
     await doc.save();
     res.status(204).send("resource updated successfully");
   })

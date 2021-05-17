@@ -85,8 +85,8 @@ function GridToolBarSave() {
       } else {
         dispatch(
           updateVisualisationAsync({
+            _id,
             body: {
-              _id,
               data,
             },
             strategy,

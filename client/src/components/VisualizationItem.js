@@ -28,7 +28,9 @@ export default function VisualizationItem({
         <FolderIcon />
       </ListItemAvatar>
       <ListItemText>
-        <span>{`${name} ${type.replace("_", "")}`}</span>
+        <span>
+          <em>{`${name} ${type.replace("_", "")}`}</em>
+        </span>
       </ListItemText>
       <ListItemSecondaryAction>
         <IconButton edge="end" aria-label="delete" onClick={handleTrashClick}>

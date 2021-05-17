@@ -19,6 +19,7 @@ import {
   getCrudStatus,
 } from "../../redux/ui/uiSlice";
 import { getIsAuthenticated, getStrategy } from "../../redux/user/userSlice";
+import uniqid from "uniqid";
 
 function GridToolBarImport() {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -66,7 +67,7 @@ function GridToolBarSave() {
   const data = useSelector(getRows);
   const type = useSelector(getChosenAlgorithmName);
   const strategy = useSelector(getStrategy);
-  const name = `Visualisation ${rLen + 1}`;
+  const name = `Visualisation id: ${uniqid.time()}`;
   const _id = useSelector(getSavedId);
   const crudStatus = useSelector(getCrudStatus);
   const handleClick = () => {

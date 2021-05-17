@@ -30,7 +30,7 @@ export default function PlayerAnimationPanel() {
         <PlayerAnimatedLine />
       </Grid>
       <Grid item xs={12}>
-        <Box component="div" mt={3}>
+        <Box component="div" mt={1}>
           <PlayerSlider />
         </Box>
       </Grid>

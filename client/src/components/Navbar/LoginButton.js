@@ -14,5 +14,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function LoginButton() {
   const styles = useStyles();
-  return <AuthButton text="Sign In" className={styles.loginRoot} />;
+  return (
+    <AuthButton text="Sign In" modalPage="login" className={styles.loginRoot} />
+  );
 }

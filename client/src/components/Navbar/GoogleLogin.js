@@ -12,7 +12,6 @@ import GoogleIcon from "../GoogleIcon";
 import { makeStyles } from "@material-ui/styles";
 
 const useStyles = makeStyles((theme) => {
-  console.log(theme.palette.secondary.main);
   return {
     googleLogIn: {
       padding: 0,

@@ -133,6 +133,13 @@ export default function Navbar() {
                   <ListItem button>
                     <RegisterButton />
                   </ListItem>
+                  <Divider
+                    classes={{ root: styles.sideBarDivider }}
+                    variant="middle"
+                  />
+                  <ListItem button>
+                    <GoogleLogin />
+                  </ListItem>
                 </>
               ) : (
                 <>

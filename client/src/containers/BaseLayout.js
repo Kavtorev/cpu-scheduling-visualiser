@@ -13,6 +13,9 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.navbarHeight.minHeight,
     width: "100%",
     padding: "2.5625em",
+    [theme.breakpoints.down("sm")]: {
+      padding: "1em",
+    },
   },
 }));
 

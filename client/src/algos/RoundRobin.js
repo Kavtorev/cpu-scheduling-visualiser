@@ -11,7 +11,7 @@ export default function RoundRobin({ processes, comparator, timeQuantum }) {
   let frames = [];
   let frame = null;
 
-  function findCurrent() {
+  function findCurrentRR() {
     if (mainQueue.length && mainQueue[0].arrivalTime <= clock) {
       readyQueue.push(mainQueue.shift());
     }
@@ -23,7 +23,6 @@ export default function RoundRobin({ processes, comparator, timeQuantum }) {
         return current;
       }
       // moving in time
-      clock += 1;
       return null;
     } else {
       // hasn't exceeded the time quantum yet
@@ -31,9 +30,10 @@ export default function RoundRobin({ processes, comparator, timeQuantum }) {
     }
   }
   while (uncompleted) {
-    current = findCurrent();
+    current = findCurrentRR();
 
     if (current === null) {
+      clock += 1;
       continue;
     }
 

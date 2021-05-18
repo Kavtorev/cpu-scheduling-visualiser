@@ -1,5 +1,5 @@
 import { f, s } from "./helpers/index";
-
+import { findCurrent } from "./common";
 export default function Nonpreemptive({ processes, comparator, criteria }) {
   let uncompleted = processes.length;
   let readyQueue = processes.map((e) => ({ ...e })).sort(comparator);
@@ -7,33 +7,11 @@ export default function Nonpreemptive({ processes, comparator, criteria }) {
   let frames = [];
   let frame = null;
 
-  let findCurrent = () => {
-    let tPrIndex = readyQueue.findIndex((e) => {
-      return e.arrivalTime <= clock;
-    });
-
-    if (tPrIndex < 0) {
-      clock += 1;
-      return null;
-    }
-
-    for (let pId = 0; pId < readyQueue.length; pId++) {
-      if (readyQueue[pId].arrivalTime <= clock) {
-        if (readyQueue[pId][criteria] < readyQueue[tPrIndex][criteria]) {
-          tPrIndex = pId;
-        }
-      } else {
-        break;
-      }
-    }
-
-    return tPrIndex;
-  };
-
   while (uncompleted) {
-    const curIndex = findCurrent();
+    const curIndex = findCurrent(readyQueue, clock, criteria);
 
     if (curIndex === null) {
+      clock += 1;
       continue;
     }
 

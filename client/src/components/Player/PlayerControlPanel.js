@@ -136,9 +136,9 @@ export default function PlayerControlPanel() {
           }
           break;
         case "start":
-          let frames = executeAlgo(algo, processes);
+          let { frames } = executeAlgo(algo, processes);
           console.log(frames);
-          dispatch(setFrames("frame", frames));
+          dispatch(setFrames(frames));
           dispatch(startAction());
           break;
         case "resume":

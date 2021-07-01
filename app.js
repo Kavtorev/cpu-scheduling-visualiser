@@ -4,6 +4,7 @@ const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
 const mongoose = require("mongoose");
 const { mongoOptions, mongoUri } = require("./config/db");
+const { IN_PROD } = require("./config/app");
 const {
   notFoundResponse,
   internalServerError,
@@ -24,6 +25,15 @@ function initApp() {
   // app.get("/test", middleware, (req, res) => {
   //   res.send("Hello");
   // });
+
+  if (IN_PROD) {
+    app.use("/", express.static(path.join(__dirname, "client", "build")));
+    app.get("*", (req, res) => {
+      res.sendFile(
+        path.resolve(path.join(__dirname, "client", "build", "index.html"))
+      );
+    });
+  }
 
   app.use(require("./routes/login"));
   app.use(require("./routes/register"));

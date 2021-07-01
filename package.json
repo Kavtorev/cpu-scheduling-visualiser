@@ -1,25 +1,29 @@
 {
-  "name": "cpu-scheduling-visualizer",
+  "name": "authenticationpassportks",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "server": "nodemon index.js --prefix ./server",
-    "dev": "concurrently \"nodemon index.js --prefix ./server\" \"npm start --prefix ./client\""
+    "start": "node index.js",
+    "dev": "concurrently \"nodemon index.js\" \"npm start --prefix ./client\"",
+    "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Kavtorev/cpu-scheduling-visualizer-fullstack.git"
-  },
-  "keywords": [],
-  "author": "",
+  "author": "Dima Kavtorev",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Kavtorev/cpu-scheduling-visualizer-fullstack/issues"
+  "devDependencies": {
+    "concurrently": "^6.2.0",
+    "dotenv": "^8.6.0",
+    "nodemon": "^2.0.7"
   },
-  "homepage": "https://github.com/Kavtorev/cpu-scheduling-visualizer-fullstack#readme",
   "dependencies": {
-    "concurrently": "^6.0.2",
-    "dotenv": "^8.2.0"
+    "bcrypt": "^5.0.0",
+    "cookie-parser": "^1.4.5",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "google-auth-library": "^7.0.3",
+    "joi": "^17.4.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.12.5",
+    "morgan": "^1.10.0"
   }
 }

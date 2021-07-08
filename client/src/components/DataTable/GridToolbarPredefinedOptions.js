@@ -116,8 +116,8 @@ export default memo(function GridToolbarPredefinedOptions() {
   return (
     <>
       <GridDensitySelector />
-      <GridToolbarExport />
-      <GridToolBarImport />
+      {/* <GridToolbarExport /> */}
+      {/* <GridToolBarImport /> */}
       <GridFilterToolbarButton />
       {isAuth ? <GridToolBarSave /> : null}
     </>
